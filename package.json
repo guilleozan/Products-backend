@@ -1,5 +1,5 @@
 {
-  "name": "toy-client-side",
+  "name": "products-backend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

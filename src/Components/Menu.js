@@ -64,7 +64,7 @@ export const Menu = () => {
           to="/newitem"
           className="ml-3 bg-blue-800 hover:bg-blue-600 inline-block mb-5 p-2 text-white uppercase"
         >
-          Add a new toy
+          ADD NEW PRODUCT
         </Link>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4">

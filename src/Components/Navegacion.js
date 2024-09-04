@@ -4,6 +4,7 @@ import { Menu } from "./Menu";
 import { Orders } from "./Orders";
 import { Error } from "./Error";
 import { NewItem } from "./NewItem";
+
 import "../App.css";
 
 export const Navegacion = () => {
@@ -11,7 +12,8 @@ export const Navegacion = () => {
     <BrowserRouter>
       <div className="md:flex static">
         <div className="w-2/5 bg-slate-700 stiki top-0 z-50">
-          <h1 className="p-6 text-white uppercase text-xl text-center">Navigation Bar</h1>
+         
+          <img className="bg-white " src="/La.png" alt="Navigation Image" />
           <nav className="p-6">
             <ul>
               <li className="text-white text-center p-2 hover:bg-yellow-300 text">

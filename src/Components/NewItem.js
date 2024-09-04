@@ -123,7 +123,7 @@ export const NewItem = () => {
                 id="name"
                 type="text"
                 name="name"
-                placeholder="Toy name"
+                placeholder="Product Name"
                 value={formData.name}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -186,9 +186,10 @@ export const NewItem = () => {
                 onChange={handleChange}
               >
                 <option value="">--Select one--</option>
-                <option value="childrens">Children Toys</option>
-                <option value="board-games">Board Games</option>
-                <option value="adult-games">Adult Games</option>
+                <option value="bread">Breads</option>
+                <option value="pastries">Pastries</option>
+                <option value="buns">Buns</option>
+                <option value="cakes">Cakes</option>
 
               </select>
             </div>
