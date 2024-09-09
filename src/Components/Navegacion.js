@@ -6,6 +6,8 @@ import { Error } from "./Error";
 import { NewItem } from "./NewItem";
 
 import "../App.css";
+import Login from "./auth/Login";
+
 
 export const Navegacion = () => {
   return (
@@ -16,12 +18,15 @@ export const Navegacion = () => {
           <img className="bg-white " src="/La.png" alt="Navigation Image" />
           <nav className="p-6">
             <ul>
-              <li className="text-white text-center p-2 hover:bg-yellow-300 text">
+              <li className="text-white text-center rounded-md p-2 hover:bg-yellow-300 text">
                 <NavLink to="/menu">Menu</NavLink>
               </li>
               
-              <li className="text-white text-center p-2 hover:bg-yellow-300">
+              <li className="text-white text-center rounded-md  p-2 hover:bg-yellow-300">
                 <NavLink to="/newitem">NewItem</NavLink>
+              </li>
+              <li className="text-white text-center rounded-md  p-2 hover:bg-yellow-300">
+                <NavLink to="/login">Login</NavLink>
               </li>
             </ul>
           </nav>
@@ -32,6 +37,7 @@ export const Navegacion = () => {
             <Route path="/menu" element={<Menu />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/newitem" element={<NewItem />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/*" element={<Error />} />
           </Routes>
         </div>

@@ -2,10 +2,10 @@ import React from 'react';
 
 const Login = () => {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
-        <form>
+    <div className="flex items-center justify-center min-h-screen bg-white">
+      <div className="bg-transparent p-8  w-auto">
+        <h2 className="text-2xl font-bold text-center mb-6">LA MONIJOR ADMIN PANEL</h2>
+        <form className='w-'>
           <div className="mb-4">
             <label htmlFor="username" className="block text-gray-700 font-semibold mb-2">
               Username

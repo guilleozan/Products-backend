@@ -62,7 +62,7 @@ export const Menu = () => {
         </h1>
         <Link
           to="/newitem"
-          className="ml-3 bg-blue-800 hover:bg-blue-600 inline-block mb-5 p-2 text-white uppercase"
+          className="ml-3 bg-blue-800 rounded-md p-3 hover:bg-blue-600 inline-block mb-5  text-white uppercase"
         >
           ADD NEW PRODUCT
         </Link>
