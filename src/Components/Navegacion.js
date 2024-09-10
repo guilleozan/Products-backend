@@ -33,7 +33,7 @@ export const Navegacion = () => {
         </div>
         <div className="md:w-3/5 xl:w-4/5 p-6">
           <Routes className="md:w-3-5">
-            <Route path="/" element={<Menu />} />
+            <Route path="/" element={<Login />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/newitem" element={<NewItem />} />

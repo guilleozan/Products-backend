@@ -3,9 +3,10 @@ import React from 'react';
 const Login = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-white">
-      <div className="bg-transparent p-8  w-auto">
-        <h2 className="text-2xl font-bold text-center mb-6">LA MONIJOR ADMIN PANEL</h2>
-        <form className='w-'>
+      <div className="bg-transparent p-8  w-auto flex  flex-col items-center">
+      <img className="bg-white  w-1/2 flex-auto " src="/La.png " alt="Navigation Image" />
+        <h2 className="text-2xl font-bold text-center mb-6"> ADMIN PANEL</h2>
+        <form className='w-4/5'>
           <div className="mb-4">
             <label htmlFor="username" className="block text-gray-700 font-semibold mb-2">
               Username

@@ -1,11 +1,13 @@
 import './App.css';
-import { Navegacion } from './Components/Navegacion';
+import Login from './Components/auth/Login';
+// import { Navegacion } from './Components/Navegacion';
 
 
 function App() {
   return (
     <div className="App">
-      <Navegacion />
+      {/* <Navegacion /> */}
+      <Login/>
     </div>
   );
 }
