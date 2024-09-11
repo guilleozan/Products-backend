@@ -1,10 +1,18 @@
+
 import React, { useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
-import { db } from "../firebaseConfig";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"; // For image upload
+import { db } from "../../firebase/firebase";
 import { useNavigate } from "react-router-dom";
 
 export const NewItem = () => {
   const navigate = useNavigate();
+  const storage = getStorage();
+
+  const handleBlur = (e) => {
+    validateField(e.target.name, e.target.value);
+  };
+  
 
   const [formData, setFormData] = useState({
     name: "",
@@ -12,11 +20,12 @@ export const NewItem = () => {
     price: "",
     category: "",
     image: null,
-    availability: true, // Default availability set to true
+    availability: true,
   });
 
   const [errors, setErrors] = useState({});
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -24,54 +33,37 @@ export const NewItem = () => {
       ...prevData,
       [name]: type === "file" ? files[0] : value,
     }));
-    // Validate the field when the user is typing
     validateField(name, value);
-  };
-
-  const handleBlur = (e) => {
-    // Validate the field when the user clicks out of it
-    validateField(e.target.name, e.target.value);
   };
 
   const validateField = (fieldName, value) => {
     const newErrors = { ...errors };
-
     switch (fieldName) {
       case "name":
         newErrors.name = value.trim() === "" ? "Name is required" : "";
         break;
       case "description":
-        newErrors.description =
-          value.trim() === "" ? "Description is required" : "";
+        newErrors.description = value.trim() === "" ? "Description is required" : "";
         break;
       case "price":
         newErrors.price =
-          value.trim() === ""
-            ? "Price is required"
-            : isNaN(value) || parseFloat(value) <= 0
+          value.trim() === "" || isNaN(value) || parseFloat(value) <= 0
             ? "Price must be a valid number greater than 0"
             : "";
         break;
-      // Add more cases for other fields if needed
       default:
         break;
     }
-
     setErrors(newErrors);
   };
 
   const validateForm = () => {
     const newErrors = {};
-
-    // Validate all fields
     validateField("name", formData.name);
     validateField("description", formData.description);
     validateField("price", formData.price);
-
     setErrors(newErrors);
     setFormSubmitted(true);
-
-    // Check if there are any errors
     const hasErrors = Object.values(newErrors).some((error) => error !== "");
     return !hasErrors;
   };
@@ -80,41 +72,62 @@ export const NewItem = () => {
     e.preventDefault();
 
     if (validateForm()) {
-      // Form is valid, proceed with form submission
       try {
-        // Add a new document with the form data to the "products" collection
-        const docRef = await addDoc(collection(db, "Products"), formData);
+        // If there's an image, upload it to Firebase Storage
+        let imageUrl = null;
+        if (formData.image) {
+          const storageRef = ref(storage, `images/${formData.image.name}`);
+          const uploadTask = uploadBytesResumable(storageRef, formData.image);
 
-        navigate('/menu');
-
-        console.log("Document written with ID: ", docRef.id);
-
-        // Optionally, you can reset the form data after successful submission
-        setFormData({
-          name: "",
-          description: "",
-          price: "",
-          category: "",
-          image: null,
-          availability: true,
-        });
+          uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+              const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              setUploadProgress(progress);
+              console.log(`Upload is ${progress}% done`);
+            },
+            (error) => {
+              console.error("Image upload failed:", error);
+            },
+            async () => {
+              imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+              submitForm(imageUrl); // Call function to submit data
+            }
+          );
+        } else {
+          // If no image is uploaded, just submit form without an image URL
+          submitForm(null);
+        }
       } catch (error) {
-        console.error("Error adding document: ", error);
+        console.error("Error submitting form:", error);
       }
     } else {
-      // Form is invalid, display errors or take other actions
       console.log("Form is invalid");
+    }
+  };
+
+  const submitForm = async (imageUrl) => {
+    try {
+      const productData = {
+        ...formData,
+        image: imageUrl, 
+      };
+      await addDoc(collection(db, "Products"), productData);
+      navigate("/menu");
+    } catch (error) {
+      console.error("Error adding document:", error);
     }
   };
 
   return (
     <>
       <h1 className="text-3xl font-light mb-4">Add a new product to the list</h1>
-
       <div className="flex justify-center mt-10">
         <div className="bg-gray-200 w-full p-3 rounded-md max-w-3xl">
           <form onSubmit={handleSubmit}>
-            <div className="mb-4">
+
+
+          <div className="mb-4">
               <label className="text-gray-700 text-sm mb-2" htmlFor="name">
                 Name
               </label>
@@ -194,21 +207,11 @@ export const NewItem = () => {
               </select>
             </div>
 
-            <div className="mb-4">
-              <label className="text-gray-700 text-sm mb-2" htmlFor="availability">
-                Available
-              </label>
-              <select
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="availability"
-                name="availability"
-                value={formData.availability.toString()} // Convert boolean to string
-                onChange={handleChange}
-              >
-                <option value="true">True</option>
-                <option value="false">False</option>
-              </select>
-            </div>
+
+            
+            
+
+
             <div className="mb-4">
               <label className="text-gray-700 text-sm mb-2" htmlFor="image">
                 Image
@@ -220,15 +223,8 @@ export const NewItem = () => {
                 name="image"
                 onChange={handleChange}
               />
+              {uploadProgress > 0 && <p>Upload progress: {uploadProgress}%</p>}
             </div>
-
-            {/* Display general error message */}
-            {Object.values(errors).some((error) => error !== "") && (
-              <p className="text-red-500">
-                Please complete and validate all fields before submitting.
-              </p>
-            )}
-
             <div className="flex justify-center items-center">
               <input
                 type="submit"
@@ -237,10 +233,14 @@ export const NewItem = () => {
                 disabled={formSubmitted && Object.values(errors).some((error) => error !== "")}
               />
             </div>
-
           </form>
         </div>
       </div>
     </>
   );
 };
+
+
+
+
+

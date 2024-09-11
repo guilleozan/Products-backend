@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
-import { db } from "../firebaseConfig";
+import { collection,getDocs,updateDoc,doc } from "firebase/firestore";
+import { db } from "../../firebase/firebase";
 
 export const Menu = () => {
   const [products, setProducts] = useState([]);
@@ -31,8 +31,7 @@ export const Menu = () => {
       const product = products[productIndex];
       const existBoolean = !product.availability;
 
-      // Assuming you have a field named 'availability' in your database
-      // Replace 'YourCollection' with 'Products'
+      
       const productDocRef = doc(db, "Products", productId);
 
       try {
@@ -56,10 +55,8 @@ export const Menu = () => {
 
   return (
     <>
-      <div>
-        <h1 className="text-3xl font-light mb-4 p-2">
-          Add a new Product to the list
-        </h1>
+      <div className="mt-16">
+        
         <Link
           to="/newitem"
           className="ml-3 bg-blue-800 rounded-md p-3 hover:bg-blue-600 inline-block mb-5  text-white uppercase"
@@ -67,20 +64,20 @@ export const Menu = () => {
           ADD NEW PRODUCT
         </Link>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className=" ml-32 mr-32 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4">
         {products.map((product) => (
           <div
             key={product.id}
-            className="shadow-md p-6 rounded-xl bg-slate-100 flex"
+            className="shadow-md pt-8 pl-7 rounded-xl bg-slate-100 flex"
           >
-            <div className="w-1/3">
+            <div className="w-52 h-80">
               <img
                 src={product.image}
-                className="rounded-md p-3 w-full h-32 object-cover bg-blue-400 my-5"
+                className="rounded-md object-cover"
                 alt={product.category}
               />
             </div>
-            <div className="w-2/3 pl-5">
+            <div className="w-90 pl-5">
               <p className="text-xl font-semibold mb-2">{product.name}</p>
               <p className="text-gray-600 mb-4">{product.description}</p>
               <p className="text-gray-600 mb-4">

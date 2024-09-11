@@ -1,14 +1,47 @@
-import './App.css';
-import Login from './Components/auth/Login';
-// import { Navegacion } from './Components/Navegacion';
+import Login from "./components/auth/login";
+import Register from "./components/auth/register";
 
+import Header from "./components/header";
+import Home from "./components/home";
+import { Menu } from "./components/home/Menu";
+import { NewItem } from "./components/home/NewItem";
+
+import { AuthProvider } from "./contexts/authContext";
+import { useRoutes } from "react-router-dom";
 
 function App() {
+  const routesArray = [
+    {
+      path: "*",
+      element: <Login />,
+    },
+    {
+      path: "/login",
+      element: <Login />,
+    },
+    {
+      path: "/register",
+      element: <Register />,
+    },
+    {
+      path: "/home",
+      element: <Home />,
+    },
+    {
+      path: "/menu",
+      element: <Menu/>
+    },
+    {
+      path: "newitem",
+      element: <NewItem/>
+    }
+  ];
+  let routesElement = useRoutes(routesArray);
   return (
-    <div className="App">
-      {/* <Navegacion /> */}
-      <Login/>
-    </div>
+    <AuthProvider>
+      <Header />
+      <div className="w-full h-screen flex flex-col">{routesElement}</div>
+    </AuthProvider>
   );
 }
 
