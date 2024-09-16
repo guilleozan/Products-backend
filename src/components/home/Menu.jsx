@@ -68,9 +68,9 @@ export const Menu = () => {
         {products.map((product) => (
           <div
             key={product.id}
-            className="shadow-md pt-8 pl-7 rounded-xl bg-slate-100 flex"
+            className="shadow-md p-6 rounded-xl bg-slate-100 flex flex-wrap"
           >
-            <div className="w-52 h-80">
+            <div className="w-52 h-52 overflow-hidden rounded-md">
               <img
                 src={product.image}
                 className="rounded-md object-cover"
