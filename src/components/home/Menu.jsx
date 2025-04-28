@@ -79,7 +79,7 @@ export const Menu = () => {
             </div>
             <div className="w-90 pl-5">
               <p className="text-xl font-semibold mb-2">{product.name}</p>
-              <p className="text-gray-600 mb-4">{product.description}</p>
+              <p className="text-gray-600 mb-4 line-clamp-2">{product.description}</p>
               <p className="text-gray-600 mb-4">
                 <span className="text-sm font-bold">Category: </span>
                 {product.category}
